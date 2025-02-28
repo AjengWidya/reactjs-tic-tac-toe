@@ -1,52 +1,23 @@
 import { useState } from "react";
 
 function Square({ value, onSquareClick }) {
-  // const [value, setValue] = useState(null);
-
-  // function handleClick() {
-  //   setValue('X');
-  // }
-
-  // return <button
-  //   className="square"
-  //   onClick={handleClick}
-  // >
-  //   {value}
-  // </button>
-  
   return <button className="square" onClick={onSquareClick}>{value}</button>
 }
 
 function Board({ xIsNext, squares, onPlay }) {
-  // const [xIsNext, setXIsNext] = useState(true);
-  // const [squares, setSquares] = useState(Array(9).fill(null));
-
   function handleClick(i) {
-    if (squares[i] || calculateWinner(squares)) return;
+    if (calculateWinner(squares) || squares[i]) return;
 
-    const nextSquares = squares.slice(); // copy squares array to nextSquares
-    // nextSquares[i] = "X";
-    // setSquares(nextSquares);
+    const nextSquares = squares.slice();
+    nextSquares[i] = xIsNext ? 'X' : 'O';
 
-    if (xIsNext) {
-      nextSquares[i] = 'X';
-    } else {
-      nextSquares[i] = 'O';
-    }
-
-    // setSquares(nextSquares);
-    // setXIsNext(!xIsNext);
     onPlay(nextSquares);
   }
 
   const winner = calculateWinner(squares);
   let status;
 
-  if (winner) {
-    status = 'Winner: ' + winner;
-  } else {
-    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
-  }
+  status = winner ? `Winner: ${winner}` : `Next player: ${(xIsNext ? 'X' : 'O')}`;
 
   return (
     <>
